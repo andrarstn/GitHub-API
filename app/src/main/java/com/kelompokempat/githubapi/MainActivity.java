@@ -77,6 +77,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        searchUser = findViewById(R.id.searchUser);
+        imageClear = findViewById(R.id.imageClear);
+        imageFavorite = findViewById(R.id.imageFavorite);
+        rvListUser = findViewById(R.id.rvListUser);
+        layoutEmpty = findViewById(R.id.layoutEmpty);
+
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Mohon Tunggu...");
         progressDialog.setCancelable(false);

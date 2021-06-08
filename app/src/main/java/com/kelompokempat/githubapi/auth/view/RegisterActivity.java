@@ -40,7 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-YYYY HH:mm:ss");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                 String currentDate = simpleDateFormat.format(new Date());
 
                 DataUsers dataUsers = new DataUsers();

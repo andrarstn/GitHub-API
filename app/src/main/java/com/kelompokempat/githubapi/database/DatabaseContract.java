@@ -6,7 +6,7 @@ import android.provider.BaseColumns;
 
 public class DatabaseContract {
 
-    public static final String PACKAGE = "com.azhar.githubusers";
+    public static final String PACKAGE = "com.kelompokempat.githubapi";
     public static final String SCHEME = "content";
 
     public static final class FavoriteColoumn implements BaseColumns {

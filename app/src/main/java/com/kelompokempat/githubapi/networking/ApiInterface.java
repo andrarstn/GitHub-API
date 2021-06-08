@@ -1,6 +1,7 @@
 package com.kelompokempat.githubapi.networking;
 
 import com.kelompokempat.githubapi.model.follow.ModelFollow;
+import com.kelompokempat.githubapi.model.repo.ModelRepo;
 import com.kelompokempat.githubapi.model.search.ModelSearch;
 import com.kelompokempat.githubapi.model.user.ModelUser;
 
@@ -27,6 +28,10 @@ public interface ApiInterface {
 
     @GET("users/{username}/following")
     Call<ArrayList<ModelFollow>> followingUser(@Header("Authorization") String authorization,
-                                          @Path("username") String username);
+                                               @Path("username") String username);
+
+    @GET("users/{username}/repos")
+    Call<ArrayList<ModelRepo>> repoUser(@Header("Authorization") String authorization,
+                                             @Path("username") String username);
 
 }

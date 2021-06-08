@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import com.kelompokempat.githubapi.fragment.FragmentRepo;
 import com.kelompokempat.githubapi.model.search.ModelSearchData;
 import com.kelompokempat.githubapi.fragment.FragmentFollowers;
 import com.kelompokempat.githubapi.fragment.FragmentFollowing;
@@ -34,13 +35,17 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 fragment = new FragmentFollowing();
                 fragment.setArguments(bundle);
                 break;
+            case 2:
+                fragment = new FragmentRepo();
+                fragment.setArguments(bundle);
+                break;
         }
         return fragment;
     }
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -52,6 +57,9 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 break;
             case 1:
                 title = "Following";
+                break;
+            case 2:
+                title = "Repository";
                 break;
         }
         return title;

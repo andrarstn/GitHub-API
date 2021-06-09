@@ -97,4 +97,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
         return false;
     }
+
+    public void reload(){
+        getSupportFragmentManager().
+                beginTransaction().replace(R.id.main_frame,new ProfileFragment()).commit();
+    }
 }

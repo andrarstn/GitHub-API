@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.kelompokempat.githubapi.MainActivity;
@@ -27,9 +28,9 @@ import com.kelompokempat.githubapi.auth.view.WelcomeActivity;
  * create an instance of this fragment.
  */
 public class ProfileFragment extends Fragment {
-    private TextView tvFullName,tvUsername;
+    private TextView tvFullName,tvUsername, tvJoined;
     private Button btnUpdate, btnSignOut, btnDelete;
-    private TextInputEditText etusername, etpassword;
+    private TextInputEditText etUsername, etPassword, etPasswordNew, etFullname;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -89,6 +90,61 @@ public class ProfileFragment extends Fragment {
         tvUsername = view.findViewById(R.id.tv_username_profilefragment);
         tvUsername.setText(dataUsers.getUsername());
 
+        tvJoined = view.findViewById(R.id.tv_joined);
+        tvJoined.setText(dataUsers.getCreatedAt());
+
+        etFullname = view.findViewById(R.id.ti_fullname_fragmentprofile);
+        etUsername = view.findViewById(R.id.ti_username_fragmentprofile);
+        etPassword = view.findViewById(R.id.ti_password_fragmentprofile);
+        etPasswordNew = view.findViewById(R.id.ti_passwordnew_fragmentprofile);
+
+        btnUpdate = view.findViewById(R.id.btn_update_fragmentprofile);
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!etFullname.getText().toString().isEmpty() && !etUsername.getText().toString().isEmpty() && !etPassword.getText().toString().isEmpty() && !etPasswordNew.getText().toString().isEmpty()) {
+                    DataUsers checkUsernameAvailability = usersDAO.checkUser(etUsername.getText().toString());
+                    if (!dataUsers.getPassword().equals(etPassword.getText().toString())) {
+                        Toast.makeText(v.getContext(), "Wrong Old Password", Toast.LENGTH_SHORT).show();
+                    }else{
+                        if (dataUsers.getUsername().equals(etUsername.getText().toString())){
+                            DataUsers newDataUser = new DataUsers();
+                            newDataUser.setId(dataUsers.getId());
+                            newDataUser.setName(etFullname.getText().toString());
+                            newDataUser.setUsername(dataUsers.getUsername());
+                            newDataUser.setPassword(etPasswordNew.getText().toString());
+                            newDataUser.setCreatedAt(dataUsers.getCreatedAt());
+
+                            usersDAO.updateData(newDataUser);
+
+                            ((MainActivity)getActivity()).reload();
+                        }else{
+                            if (checkUsernameAvailability!=null){
+                                Toast.makeText(v.getContext(), "Username Has Been Registered", Toast.LENGTH_SHORT).show();
+                            }else{
+                                DataUsers newDataUser = new DataUsers();
+                                newDataUser.setId(dataUsers.getId());
+                                newDataUser.setName(etFullname.getText().toString());
+                                newDataUser.setUsername(etUsername.getText().toString());
+                                newDataUser.setPassword(etPasswordNew.getText().toString());
+                                newDataUser.setCreatedAt(dataUsers.getCreatedAt());
+
+                                usersDAO.updateData(newDataUser);
+
+                                SharedPreferences.Editor editor = getPreferences.edit();
+                                editor.putString("USERNAME",etUsername.getText().toString());
+                                editor.apply();
+
+                                ((MainActivity)getActivity()).reload();
+                            }
+                        }
+                    }
+                }else{
+                    Toast.makeText(v.getContext(), "Fill All Fields", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         btnDelete = view.findViewById(R.id.btn_delete_fragmentprofile);
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,5 +177,23 @@ public class ProfileFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private Boolean validation(DataUsers dataUsers){
+        if (!dataUsers.getName().isEmpty() && !dataUsers.getUsername().isEmpty() && !dataUsers.getPassword().isEmpty()){
+            UsersAppDatabase usersAppDatabase = UsersAppDatabase.inidb(this.getContext());
+            UsersDAO usersDAO = usersAppDatabase.usersDAO();
+
+            DataUsers validateUsername = usersDAO.checkUser(dataUsers.getUsername());
+            if (validateUsername != null){
+                Toast.makeText(this.getContext(), "Username has been registered", Toast.LENGTH_SHORT).show();
+                return false;
+            }else{
+                return true;
+            }
+        }else{
+            Toast.makeText(this.getContext(), "Fill all fields", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 }

@@ -43,15 +43,6 @@ public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoViewHolder
 
         holder.tvUsername.setText(item.getLogin());
         holder.tvUrl.setText(item.getHtmlUrl());
-        /*holder.cvListUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, DetailActivity.class);
-                intent.putExtra(DetailActivity.DETAIL_USER, modelFollowersArrayList.get(position));
-                context.startActivity(intent);
-            }
-        });*/
-
     }
 
     @Override

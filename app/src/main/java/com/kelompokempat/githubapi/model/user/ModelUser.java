@@ -59,20 +59,8 @@ public class ModelUser {
         return login;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
     public String getAvatarUrl() {
         return avatarUrl;
-    }
-
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
-    }
-
-    public String getHtmlUrl() {
-        return htmlUrl;
     }
 
     public void setHtmlUrl(String htmlUrl) {
@@ -87,24 +75,12 @@ public class ModelUser {
         this.name = name;
     }
 
-    public String getBlog() {
-        return blog;
-    }
-
     public void setBlog(String blog) {
         this.blog = blog;
     }
 
     public String getLocation() {
         return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public void setEmail(String email) {
@@ -115,14 +91,6 @@ public class ModelUser {
         return bio;
     }
 
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
-    public String getTwitterUsername() {
-        return twitterUsername;
-    }
-
     public void setTwitterUsername(String twitterUsername) {
         this.twitterUsername = twitterUsername;
     }
@@ -131,24 +99,12 @@ public class ModelUser {
         return publicRepos;
     }
 
-    public void setPublicRepos(String publicRepos) {
-        this.publicRepos = publicRepos;
-    }
-
     public String getFollowers() {
         return followers;
     }
 
-    public void setFollowers(String followers) {
-        this.followers = followers;
-    }
-
     public String getFollowing() {
         return following;
-    }
-
-    public void setFollowing(String following) {
-        this.following = following;
     }
 
 }

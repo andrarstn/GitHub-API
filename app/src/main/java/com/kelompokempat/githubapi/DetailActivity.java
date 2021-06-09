@@ -13,11 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
-import com.kelompokempat.githubapi.R;
 import com.kelompokempat.githubapi.adapter.ViewPagerAdapter;
-import com.kelompokempat.githubapi.database.DatabaseContract;
-import com.kelompokempat.githubapi.database.DatabaseHelper;
-import com.kelompokempat.githubapi.database.FavoriteHelper;
 import com.kelompokempat.githubapi.model.search.ModelSearchData;
 import com.kelompokempat.githubapi.model.user.ModelUser;
 import com.kelompokempat.githubapi.viewmodel.UserViewModel;
@@ -28,12 +24,9 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 
-import static com.kelompokempat.githubapi.database.DatabaseContract.FavoriteColoumn.TABLE_NAME;
-
 public class DetailActivity extends AppCompatActivity {
 
     public static final String DETAIL_USER = "DETAIL_USER";
-    private FavoriteHelper favoriteHelper;
     ArrayList<ModelUser> modelUserArrayList = new ArrayList<>();
     UserViewModel userViewModel;
     ModelSearchData modelSearchData;
@@ -60,7 +53,6 @@ public class DetailActivity extends AppCompatActivity {
         tvRepository = findViewById(R.id.tvRepository);
         tabsLayout = findViewById(R.id.tabsLayout);
         viewPager = findViewById(R.id.viewPager);
-        imageFavorite = findViewById(R.id.imageFavorite);
         collapsingToolbarLayout = findViewById(R.id.collapsingToolbarLayout);
 
         toolbar.setTitle(null);
@@ -69,8 +61,6 @@ public class DetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        favoriteHelper = FavoriteHelper.getFavoriteHelper(getApplicationContext());
-        favoriteHelper.open();
 
         modelSearchData = getIntent().getParcelableExtra(DETAIL_USER);
         if (modelSearchData != null) {
@@ -96,53 +86,7 @@ public class DetailActivity extends AppCompatActivity {
             tvFollowing.setText(modelUser.getFollowing());
             tvRepository.setText(modelUser.getPublicRepos());
 
-            //method set favorite or unfavorite
-            if (FavoriteExist(strUsername)) {
-                imageFavorite.setFavorite(true);
-                imageFavorite.setOnFavoriteChangeListener(
-                        (buttonView, favorite) -> {
-                            if (favorite) {
-                                modelUserArrayList = favoriteHelper.getAllFavorites();
-                                favoriteHelper.favoriteInsert(modelUser);
-                                Toast.makeText(getApplicationContext(), "Ditambahkan Favorite", Toast.LENGTH_SHORT).show();
-                            } else {
-                                modelUserArrayList = favoriteHelper.getAllFavorites();
-                                favoriteHelper.favoriteDelete(strUsername);
-                                Toast.makeText(getApplicationContext(), "Dihapus Favorite", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-            } else {
-                imageFavorite.setOnFavoriteChangeListener(
-                        (buttonView, favorite) -> {
-                            if (favorite) {
-                                modelUserArrayList = favoriteHelper.getAllFavorites();
-                                favoriteHelper.favoriteInsert(modelUser);
-                                Toast.makeText(getApplicationContext(), "Ditambahkan Favorite", Toast.LENGTH_SHORT).show();
-                            } else {
-                                modelUserArrayList = favoriteHelper.getAllFavorites();
-                                favoriteHelper.favoriteDelete(strUsername);
-                                Toast.makeText(getApplicationContext(), "Dihapus Favorite", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-            }
         });
-    }
-
-    //method check data if exist
-    public boolean FavoriteExist(String item) {
-        String pilih = DatabaseContract.FavoriteColoumn.TITLE + " =?";
-        String[] pilihArg = {item};
-        String limit = "1";
-        favoriteHelper = new FavoriteHelper(this);
-        favoriteHelper.open();
-        DatabaseHelper dataBaseHelper = new DatabaseHelper(DetailActivity.this);
-        SQLiteDatabase database = dataBaseHelper.getWritableDatabase();
-        Cursor cursor = database.query(TABLE_NAME, null, pilih, pilihArg, null, null, null, limit);
-        boolean exists;
-        exists = (cursor.getCount() > 0);
-        cursor.close();
-
-        return exists;
     }
 
     @Override

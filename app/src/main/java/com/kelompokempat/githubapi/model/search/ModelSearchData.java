@@ -21,44 +21,21 @@ public class ModelSearchData implements Parcelable{
     @SerializedName("html_url")
     private String htmlUrl;
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
     public String getLogin() {
         return login;
-    }
-
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
     }
 
     public String getAvatarUrl() {
         return avatarUrl;
     }
 
-    public void setHtmlUrl(String htmlUrl) {
-        this.htmlUrl = htmlUrl;
-    }
-
     public String getHtmlUrl() {
         return htmlUrl;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     @Override
     public int describeContents() {
         return 0;
-    }
-
-    public ModelSearchData() {
     }
 
     protected ModelSearchData(@NotNull Parcel in) {

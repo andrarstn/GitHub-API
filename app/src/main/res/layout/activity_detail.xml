@@ -185,28 +185,4 @@
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        app:cardBackgroundColor="@color/colorAccent"
-        app:cardCornerRadius="64dp"
-        app:cardElevation="10dp">
-
-        <com.github.ivbaranov.mfb.MaterialFavoriteButton
-            android:id="@+id/imageFavorite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:mfb_animate_favorite="true"
-            app:mfb_animate_unfavorite="true"
-            app:mfb_bounce_duration="0"
-            app:mfb_favorite_image="@drawable/ic_favorite"
-            app:mfb_not_favorite_image="@drawable/ic_unfavorite"
-            app:mfb_rotation_angle="360"
-            app:mfb_rotation_duration="400" />
-
-    </androidx.cardview.widget.CardView>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

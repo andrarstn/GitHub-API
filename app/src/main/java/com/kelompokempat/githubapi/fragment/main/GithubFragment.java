@@ -17,15 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.kelompokempat.githubapi.FavoriteActivity;
-import com.kelompokempat.githubapi.MainActivity;
 import com.kelompokempat.githubapi.R;
 import com.kelompokempat.githubapi.adapter.SearchAdapter;
 import com.kelompokempat.githubapi.viewmodel.UserViewModel;
@@ -42,7 +38,7 @@ public class GithubFragment extends Fragment {
     private ProgressDialog progressDialog;
     private RecyclerView rvListUser;
     private EditText searchUser;
-    private ImageView imageClear, imageFavorite;
+    private ImageView imageClear;
     private ConstraintLayout layoutEmpty;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -98,7 +94,6 @@ public class GithubFragment extends Fragment {
 
         searchUser = view.findViewById(R.id.searchUser);
         imageClear = view.findViewById(R.id.imageClear);
-        imageFavorite = view.findViewById(R.id.imageFavorite);
         rvListUser = view.findViewById(R.id.rvListUser);
         layoutEmpty = view.findViewById(R.id.layoutEmpty);
 
@@ -112,11 +107,6 @@ public class GithubFragment extends Fragment {
             imageClear.setVisibility(View.GONE);
             layoutEmpty.setVisibility(View.VISIBLE);
             rvListUser.setVisibility(View.GONE);
-        });
-
-        imageFavorite.setOnClickListener(v -> {
-            Intent intent = new Intent(this.getContext(), FavoriteActivity.class);
-            startActivity(intent);
         });
 
         //method action search

@@ -9,12 +9,12 @@ public class ModelSearch {
     @SerializedName("items")
     private List<ModelSearchData> modelSearchData;
 
-    public List<ModelSearchData> getModelSearchData() {
-        return modelSearchData;
+    public ModelSearch(List<ModelSearchData> modelSearchData) {
+        this.modelSearchData = modelSearchData;
     }
 
-    public void setModelSearchData(List<ModelSearchData> modelSearchData) {
-        this.modelSearchData = modelSearchData;
+    public List<ModelSearchData> getModelSearchData() {
+        return modelSearchData;
     }
 
 }

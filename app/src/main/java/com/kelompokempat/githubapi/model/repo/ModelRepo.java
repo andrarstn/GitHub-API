@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class ModelRepo implements Parcelable {
 
-    @SerializedName("login")
+    @SerializedName("name")
     private String login;
 
     @SerializedName("html_url")

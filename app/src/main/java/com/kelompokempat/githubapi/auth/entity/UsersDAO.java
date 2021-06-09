@@ -28,6 +28,6 @@ public interface UsersDAO {
     @Update
     int updateData(DataUsers user);
 
-    @Delete
-    void deleteData(DataUsers user);
+    @Query("DELETE FROM users_db WHERE username= :username")
+    void deleteSingleData(String username);
 }

@@ -1,14 +1,17 @@
 package com.kelompokempat.githubapi;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.kelompokempat.githubapi.auth.view.LoginActivity;
 import com.kelompokempat.githubapi.auth.view.RegisterActivity;
 import com.kelompokempat.githubapi.auth.view.WelcomeActivity;
@@ -25,25 +28,21 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kelompokempat.githubapi.R;
 import com.kelompokempat.githubapi.adapter.SearchAdapter;
+import com.kelompokempat.githubapi.fragment.main.GithubFragment;
+import com.kelompokempat.githubapi.fragment.main.ProfileFragment;
 import com.kelompokempat.githubapi.viewmodel.UserViewModel;
 
 
-public class MainActivity extends AppCompatActivity {
-    TextView tv;
-    Button btnSignOut;
-    SearchAdapter searchAdapter;
-    UserViewModel searchViewModel;
-    ProgressDialog progressDialog;
-    RecyclerView rvListUser;
-    EditText searchUser;
-    ImageView imageClear, imageFavorite;
-    ConstraintLayout layoutEmpty;
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,80 +58,43 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        tv = findViewById(R.id.tv_Hello);
-        tv.setText(username);
 
-        btnSignOut = findViewById(R.id.btn_signoutmain);
-        btnSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences.Editor editor = getPreferences.edit();
-                editor.putBoolean("LOGGED",false);
-                editor.putString("USERNAME","DEFAULT");
-                editor.apply();
+        bottomNavigationView = findViewById(R.id.bot_navbar_main);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-                Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
-                MainActivity.this.startActivity(intent);
-                finish();
-            }
-        });
+        loadFragment(new Fragment());
 
-        searchUser = findViewById(R.id.searchUser);
-        imageClear = findViewById(R.id.imageClear);
-        imageFavorite = findViewById(R.id.imageFavorite);
-        rvListUser = findViewById(R.id.rvListUser);
-        layoutEmpty = findViewById(R.id.layoutEmpty);
+        if(savedInstanceState == null) {
+            getSupportFragmentManager().
+                    beginTransaction().replace(R.id.main_frame,new GithubFragment()).commit();
+        }
+    }
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Mohon Tunggu...");
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Sedang menampilkan data");
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Fragment fragment = null;
 
-        imageClear.setOnClickListener(view -> {
-            searchUser.getText().clear();
-            imageClear.setVisibility(View.GONE);
-            layoutEmpty.setVisibility(View.VISIBLE);
-            rvListUser.setVisibility(View.GONE);
-        });
+        switch (item.getItemId()){
+            case R.id.ic_github_menu:
+                fragment = new GithubFragment();
+                break;
 
-        imageFavorite.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, FavoriteActivity.class);
-            startActivity(intent);
-        });
+            case R.id.ic_user_menu:
+                fragment = new ProfileFragment();
+                break;
+        }
+        return loadFragment(fragment);
+    }
 
-        //method action search
-        searchUser.setOnEditorActionListener((v, actionId, event) -> {
-            String strUsername = searchUser.getText().toString();
-            if (strUsername.isEmpty()) {
-                Toast.makeText(MainActivity.this, "Form tidak boleh kosong!", Toast.LENGTH_SHORT).show();
-            } else {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    progressDialog.show();
-                    searchViewModel.setSearchUser(strUsername);
-                    InputMethodManager inputMethodManager = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                    imageClear.setVisibility(View.VISIBLE);
-                    layoutEmpty.setVisibility(View.GONE);
-                    return true;
-                }
-            }
-            return false;
-        });
+    private boolean loadFragment(Fragment fragment){
+        if (fragment != null){
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.main_frame, fragment)
+                    .commit();
 
-        searchAdapter = new SearchAdapter(this);
-        rvListUser.setLayoutManager(new LinearLayoutManager(this));
-        rvListUser.setAdapter(searchAdapter);
-        rvListUser.setHasFixedSize(true);
-
-        //method set viewmodel
-        searchViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(UserViewModel.class);
-        searchViewModel.getResultList().observe(this, modelSearchData -> {
-            progressDialog.dismiss();
-            if (modelSearchData.size() != 0) {
-                searchAdapter.setSearchUserList(modelSearchData);
-            } else {
-                Toast.makeText(MainActivity.this, "Pengguna Tidak Ditemukan!", Toast.LENGTH_SHORT).show();
-            }
-        });
+            return true;
+        }
+        return false;
     }
 }

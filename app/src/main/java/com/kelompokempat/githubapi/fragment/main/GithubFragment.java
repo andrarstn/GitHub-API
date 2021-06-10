@@ -98,22 +98,23 @@ public class GithubFragment extends Fragment {
         layoutEmpty = view.findViewById(R.id.layoutEmpty);
 
         progressDialog = new ProgressDialog(this.getActivity());
-        progressDialog.setTitle("Mohon Tunggu...");
+        progressDialog.setTitle("Please Wait...");
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Sedang menampilkan data");
+        progressDialog.setMessage("Trying Fetching Data");
 
         imageClear.setOnClickListener(v -> {
             searchUser.getText().clear();
             imageClear.setVisibility(View.GONE);
             layoutEmpty.setVisibility(View.VISIBLE);
-            rvListUser.setVisibility(View.GONE);
+//            rvListUser.setVisibility(View.GONE);
+            searchAdapter.clear();
         });
 
         //method action search
         searchUser.setOnEditorActionListener((v, actionId, event) -> {
             String strUsername = searchUser.getText().toString();
             if (strUsername.isEmpty()) {
-                Toast.makeText(this.getContext(), "Form tidak boleh kosong!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this.getContext(), "Please fill the search box!", Toast.LENGTH_SHORT).show();
             } else {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     progressDialog.show();
@@ -140,7 +141,7 @@ public class GithubFragment extends Fragment {
             if (modelSearchData.size() != 0) {
                 searchAdapter.setSearchUserList(modelSearchData);
             } else {
-                Toast.makeText(this.getContext(), "Pengguna Tidak Ditemukan!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this.getContext(), "User Not Found", Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -79,4 +79,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         }
     }
 
+    public void clear() {
+        int size = modelSearchDataList.size();
+        modelSearchDataList.clear();
+        notifyItemRangeRemoved(0, size);
+    }
+
 }
